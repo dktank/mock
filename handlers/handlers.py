@@ -1,7 +1,7 @@
 import tornado.web
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        data = {"1":{  "args": {},
+        data = {  "args": {},
                   "headers": {
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
                     "Accept-Encoding": "gzip, deflate",
@@ -15,7 +15,6 @@ class IndexHandler(tornado.web.RequestHandler):
                   "origin": "124.65.37.238",
                   "url": "http://httpbin.org/get"
                    }
-          }
         self.write(data)
 
 class ContentHandler(tornado.web.RequestHandler):
