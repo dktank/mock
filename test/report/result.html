@@ -90,8 +90,20 @@ a.popup_link:hover {
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
 .testcase   { margin-left: 2em; }
-
-
+#show_detail_line a{
+	display:block;
+	float:left;
+	padding:2px 5px;
+	margin-left:6px;
+	text-decoration:none;
+	border-radius:3px;
+	color:white ;
+}
+#show_detail_line #a{
+	color:black ;
+	font-weight:900;
+}
+}
 /* -- ending ---------------------------------------------------------------------- */
 #ending {
 }
@@ -196,10 +208,10 @@ function showOutput(id, name) {
 --></script>
 
 <div class='heading'>
-<h1>Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2018-07-31 11:44:40</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:00.055003</p>
-<p class='attribute'><strong>Status:</strong> Pass 2</p>
+<h1>标题：Test Report</h1>
+<p class='attribute'><strong>Start Time:</strong> 2018-08-01 12:22:44</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.045146</p>
+<p class='attribute'><strong>Status:</strong> Pass 1</p>
 
 <p class='description'>测试结果总览:</p>
 </div>
@@ -207,10 +219,11 @@ function showOutput(id, name) {
 
 
 <div id="body">
-<p id='show_detail_line'>Show
-<a href='javascript:showCase(0)'>Summary</a>
-<a href='javascript:showCase(1)'>Failed</a>
-<a href='javascript:showCase(2)'>All</a>
+<p id='show_detail_line' style="    line-height:20px;
+    height:23px;"><a id="a">Show</a>
+<a style="background-color:#468cc8" href='javascript:showCase(0)'>Summary</a>
+<a style="background-color:#d75452" href='javascript:showCase(1)'>Failed</a>
+<a style="background-color:#5fc0dd" href='javascript:showCase(2)'>All</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -232,27 +245,22 @@ function showOutput(id, name) {
 
 <tr class='passClass'>
     <td>test.testhttp</td>
-    <td>2</td>
-    <td>2</td>
+    <td>1</td>
+    <td>1</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',2)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c1',1)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_get</div></td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt1.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_post</div></td>
+    <td class='none'><div class='testcase'>test_get: 测试get请求的json数据</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>2</td>
-    <td>2</td>
+    <td>1</td>
+    <td>1</td>
     <td>0</td>
     <td>0</td>
     <td>&nbsp;</td>
