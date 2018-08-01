@@ -9,7 +9,7 @@ class testhttp(unittest.TestCase):
     def test_get(self):
         '''测试get请求的json数据'''
         resp = requests.get(self.get_url)
-        data = resp.json()["1"]
+        data = resp.json()
         self.assertEqual(data["args"],{})
         self.assertEqual(data["headers"]["Accept"],"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
         self.assertEqual(data["headers"]["Accept-Encoding"],"gzip, deflate")
