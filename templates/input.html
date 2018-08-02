@@ -5,9 +5,18 @@
 	<title>输入页</title>
 </head>
 <body>
-	<form action="content" method="post">
-        <label for="inpcont">名字：</label><input type="text" name="inpcont" id="inpcont">
-        <label for="inpcont1">备注：</label><input type="text" name="inpcont1" id="inpcont1">
+<p>测试：No.138指定请求头内容，然后发起请求的链接<a href="/headers" >headers_url</a></p>
+<p>测试：No.137带参数k1=v1&k2=v2的表单</p>
+	<form action="/post" method="post">
+        <label for="inpcont">k1:</label><input type="text" name="k1" id="inpcont">
+        <label for="inpcont1">k2：</label><input type="text" name="k2" id="inpcont1">
+        <input type="submit" name="">
+	</form>
+<hr/>
+<p>测试：No.141带参数{'k2': 'v2', 'k1': ['v1', 'v3']}</p>
+	<form action="/post" method="post">
+        <label for="inpcont">k1:</label><input type="text" name="k1" id="inpcont">
+        <label for="inpcont1">k2：</label>v1<input type="checkbox" name="k2" id="inpcont1" value="v1">v3<input type="checkbox" name="k2" id="inpcont1" value="v3">
         <input type="submit" name="">
 	</form>
 </body>
