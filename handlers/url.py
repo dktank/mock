@@ -1,12 +1,12 @@
-import handlers.handlers as hdl
+from handlers import IndexHandler,Handler136,Handler137,Handler138,Handler139,Handler141,Handler142,Handler145,Handler149
 
 urls = [
-       (r'/', hdl.IndexHandler),
-       (r'/get', hdl.Get149Handler),
-       (r'/post', hdl.POST145Handler),
-       (r'/headers', hdl.Headers137Handler),
-       (r'/status/201',hdl.Status201Handler),
-       (r'/status/400',hdl.Status400Handler),
-       (r'/status/500',hdl.Status500Handler),
-       (r'/cookies/set',hdl.Cookies_setHandler)
+       (r'/',IndexHandler.IndexHandler),
+       (r'/get', Handler137.GetHandler),
+       (r'/post', Handler137.PostHandler),
+       (r'/headers', Handler138.GetHandler),
+       (r'/status/201',Handler139.Status201Handler),
+       (r'/status/400',Handler139.Status400Handler),
+       (r'/status/500',Handler139.Status500Handler),
+       (r'/cookies/set',Handler145.SetCookiesHandler)
       ]

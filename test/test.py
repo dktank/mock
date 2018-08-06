@@ -84,20 +84,16 @@ class testhttp(unittest.TestCase):
         '''测试No.138指定请求头内容，然后发起请求  正确请求头'''
         get_url = "http://127.0.0.1:8008/headers"
         headr = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                 'Accept-encoding': 'gzip, deflate',
+                 'Accept-Encoding': 'gzip, deflate',
                  'Host': 'httpbin.org',
                  'Referer': 'http://httpbin.org',
-                 'User-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
+                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
         reqr = requests.get(get_url,headers = headr)
         self.assertEqual(reqr.status_code,200)
+        header = {'headers':reqr.request.headers}
         data = reqr.json()
-        self.assertEqual(data["headers"]["Accept-Encoding"],"gzip, deflate")
-        self.assertEqual(data["headers"]["Connection"],"close")
-        self.assertEqual(data["headers"]["Accept"],"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-        self.assertEqual(data["headers"]["Referer"],"http://httpbin.org")
-        self.assertEqual(data["headers"]["Host"],"httpbin.org")
-        self.assertEqual(data["headers"]["User-Agent"],"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36")
-
+        equa = Equal
+        equa.equal_fun(self,data,header)
     #测试No.138指定请求头内容，然后发起请求  错误请求头
     def test_errorheaders(self):
         '''测试No.138指定请求头内容，然后发起请求  错误请求头'''
@@ -185,13 +181,16 @@ class testhttp(unittest.TestCase):
                  'Cache-Control': 'no-cache',
                  'Connection': 'keep-alive',
                  'Dnt': '1',
-                 'Host': 'httpbin.org',
-                 'Origin': 'http://httpbin.org',
+                 'Host': r'127.0.0.1:8008',
+                 'Origin': r'http://127.0.0.1:8008',
                  'Pragma': 'no-cache',
                  'Referer': 'http://httpbin.org/forms/post',
                  'Upgrade-Insecure-Requests': '1',
                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'}
         reqr = requests.post(get_url,headers = headr)
+        header = reqr.request.headers
+        url = reqr.request.url
+        origin = header['Origin']
         self.assertEqual(reqr.status_code,200)
         data = reqr.json()
         target_data = {u'args': {},
@@ -204,24 +203,10 @@ class testhttp(unittest.TestCase):
                       u'delivery': u'18:00',
                       u'size': u'large',
                       u'topping': [u'mushroom', u'cheese']},
-                     u'headers': {u'Accept': u'*/*',
-                      u'Accept-Encoding': u'gzip, deflate',
-                      u'Accept-Language': u'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
-                      u'Cache-Control': u'no-cache',
-                      u'Connection': u'close',
-                      u'Content-Length': u'392',
-                      u'Content-Type': u'application/x-www-form-urlencoded',
-                      u'Cookie': u'passport=boyabigdata',
-                      u'Dnt': u'1',
-                      u'Host': u'httpbin.org',
-                      u'Origin': u'http://httpbin.org',
-                      u'Pragma': u'no-cache',
-                      u'Referer': u'http://httpbin.org/forms/post',
-                      u'Upgrade-Insecure-Requests': u'1',
-                      u'User-Agent': u'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'},
+                     u'headers': header,
                      u'json': None,
-                     u'origin': u'124.65.37.238',
-                     u'url': u'http://httpbin.org/post'}
+                     u'origin':  origin,
+                     u'url':url}
         equa = Equal
         equa.equal_fun(self,data,target_data)
     # def test_cookie(self):
