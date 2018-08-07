@@ -209,9 +209,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>标题：Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2018-08-06 15:29:29</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:00.150009</p>
-<p class='attribute'><strong>Status:</strong> Pass 7</p>
+<p class='attribute'><strong>Start Time:</strong> 2018-08-07 11:25:00</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.089993</p>
+<p class='attribute'><strong>Status:</strong> Pass 6 Failure 1</p>
 
 <p class='description'>测试结果总览:</p>
 </div>
@@ -243,11 +243,11 @@ function showOutput(id, name) {
     <td>View</td>
 </tr>
 
-<tr class='passClass'>
+<tr class='failClass'>
     <td>test.testhttp</td>
     <td>7</td>
-    <td>7</td>
-    <td>0</td>
+    <td>6</td>
+    <td>1</td>
     <td>0</td>
     <td><a href="javascript:showClassDetail('c1',7)">Detail</a></td>
 </tr>
@@ -257,9 +257,45 @@ function showOutput(id, name) {
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_get149: 测试No.149带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}</div></td>
-    <td colspan='5' align='center'>pass</td>
+<tr id='ft1.2' class='none'>
+    <td class='failCase'><div class='testcase'>test_get149: 测试No.149带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >
+        fail</a>
+
+    <div id='div_ft1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.2: {'args': {'profile': '{"transcripts": {"\\u6570\\u5b66": 99.5, "\\u8bed\\u6587": 30}, "name": "\\u5f20\\u4e09", "hobbies": ["\\u7bee\\u7403", "\\u8db3\\u7403", "\\u7fbd\\u6bdb\\u7403"]}'}, 'headers': {'User-Agent': 'python-requests/2.19.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '252', 'Content-Type': 'application/x-www-form-urlencoded'}, 'origin': '127.0.0.1:8008', 'url': 'http://127.0.0.1:8008/get?profile={"transcripts"%3A+{"\\u6570\\u5b66"%3A+99.5%2C+"\\u8bed\\u6587"%3A+30}%2C+"name"%3A+"\\u5f20\\u4e09"%2C+"hobbies"%3A+["\\u7bee\\u7403"%2C+"\\u8db3\\u7403"%2C+"\\u7fbd\\u6bdb\\u7403"]}'}
+{'args': {'profile': '{"transcripts": {"\\u6570\\u5b66": 99.5, "\\u8bed\\u6587": 30}, "name": "\\u5f20\\u4e09", "hobbies": ["\\u7bee\\u7403", "\\u8db3\\u7403", "\\u7fbd\\u6bdb\\u7403"]}'}, 'headers': {'Host': '127.0.0.1:8008', 'User-Agent': 'python-requests/2.19.1', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '252', 'Content-Type': 'application/x-www-form-urlencoded'}, 'origin': 'http://127.0.0.1:8008', 'url': 'http://127.0.0.1:8008/get'}
+Traceback (most recent call last):
+  File "F:\tornadodemo\my_venv\Scripts\myProject\test\test.py", line 17, in equal_fun
+    self.assertEqual(data[item],target_data[item])
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python36-32\Lib\unittest\case.py", line 829, in assertEqual
+    assertion_func(first, second, msg=msg)
+AssertionError: {'User-Agent': 'python-requests/2.19.1', 'A[151 chars]ded'} != {'Host': '127.0.0.1:8008', 'User-Agent': 'p[177 chars]ded'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\tornadodemo\my_venv\Scripts\myProject\test\test.py", line 237, in test_get149
+    equa.equal_fun(self,target_data,datas)
+  File "F:\tornadodemo\my_venv\Scripts\myProject\test\test.py", line 20, in equal_fun
+    self.assertEqual(data[item],target_data[item])
+AssertionError: {'User-Agent': 'python-requests/2.19.1', 'A[151 chars]ded'} != {'Host': '127.0.0.1:8008', 'User-Agent': 'p[177 chars]ded'}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
 </tr>
 
 <tr id='pt1.3' class='hiddenRow'>
@@ -290,8 +326,8 @@ function showOutput(id, name) {
 <tr id='total_row'>
     <td>Total</td>
     <td>7</td>
-    <td>7</td>
-    <td>0</td>
+    <td>6</td>
+    <td>1</td>
     <td>0</td>
     <td>&nbsp;</td>
 </tr>
