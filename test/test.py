@@ -187,7 +187,14 @@ class testhttp(unittest.TestCase):
                  'Referer': 'http://httpbin.org/forms/post',
                  'Upgrade-Insecure-Requests': '1',
                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'}
-        reqr = requests.post(get_url,headers = headr)
+        data1 = {u'comments': u'\u5317\u4eac\u5e02\u6d77\u6dc0\u533a\u5317\u56db\u73af\u897f\u8def67\u53f7\u4e2d\u5173\u6751\u56fd\u9645\u521b\u65b0\u5927\u53a6603',
+                      u'custemail': u'service@boyabigdata.cn',
+                      u'custname': u'\u535a\u96c5\u5927\u6570\u636e\u5b66\u9662',
+                      u'custtel': u'010-62756975',
+                      u'delivery': u'18:00',
+                      u'size': u'large',
+                      u'topping': [u'mushroom', u'cheese']}
+        reqr = requests.post(get_url,data = data1,headers = headr)
         header = reqr.request.headers
         url = reqr.request.url
         origin = header['Origin']
@@ -209,27 +216,26 @@ class testhttp(unittest.TestCase):
                      u'url':url}
         equa = Equal
         equa.equal_fun(self,data,target_data)
-    # def test_cookie(self):
-    #     get_url = "http://127.0.0.1:8008/cookies/set?passport=boyabigdata"
-    #     reqr = requests.get(get_url).cookies
+
+
 
     def test_get149(self):
         '''测试No.149带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}'''
         get_url = "http://127.0.0.1:8008/get"
-        target_data = {u'args': {u'profile': u'{"transcripts": {"\\u6570\\u5b66": 99.5, "\\u8bed\\u6587": 30}, "name": "\\u5f20\\u4e09", "hobbies": ["\\u7bee\\u7403", "\\u8db3\\u7403", "\\u7fbd\\u6bdb\\u7403"]}'},
-                         u'headers': {u'Accept': u'*/*',
-                          u'Accept-Encoding': u'gzip, deflate',
-                          u'Connection': u'close',
-                          u'Host': u'httpbin.org',
-                          u'User-Agent': u'python-requests/2.18.4'},
-                         u'origin': u'124.65.37.238',
-                         u'url': u'http://httpbin.org/get?profile={"transcripts"%3A+{"\\u6570\\u5b66"%3A+99.5%2C+"\\u8bed\\u6587"%3A+30}%2C+"name"%3A+"\\u5f20\\u4e09"%2C+"hobbies"%3A+["\\u7bee\\u7403"%2C+"\\u8db3\\u7403"%2C+"\\u7fbd\\u6bdb\\u7403"]}'}
-        data = {'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}
+        data = {u'profile': u'{"transcripts": {"\u6570\u5b66": 99.5, "\u8bed\u6587": 30}, "name": "\u5f20\u4e09", "hobbies": ["\u7bee\u7403", "\u8db3\u7403", "\u7fbd\u6bdb\u7403"]}'}
         reqr = requests.get(get_url,data = data)
+        header = reqr.request.headers
+        header["Host"] = "127.0.0.1:8008"
+        target_data = {u'args': {u'profile': u'{"transcripts": {"\u6570\u5b66": 99.5, "\u8bed\u6587": 30}, "name": "\u5f20\u4e09", "hobbies": ["\u7bee\u7403", "\u8db3\u7403", "\u7fbd\u6bdb\u7403"]}'},
+                         u'headers': header,
+                         u'origin': u'http://127.0.0.1:8008',
+                         u'url': u'http://127.0.0.1:8008/get?profile={"transcripts"%3A+{"\\u6570\\u5b66"%3A+99.5%2C+"\\u8bed\\u6587"%3A+30}%2C+"name"%3A+"\\u5f20\\u4e09"%2C+"hobbies"%3A+["\\u7bee\\u7403"%2C+"\\u8db3\\u7403"%2C+"\\u7fbd\\u6bdb\\u7403"]}'}
         self.assertEqual(reqr.status_code,200)
+        print(target_data)
         datas = reqr.json()
+        print(datas)
         equa = Equal
-        equa.equal_fun(self,datas,target_data)
+        equa.equal_fun(self,target_data,datas)
 
 if __name__ == "__main__":
     unittest.main()
