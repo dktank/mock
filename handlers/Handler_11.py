@@ -7,11 +7,10 @@ class  GetHandler(Request):
     def get(self):
         try:
             Request.result1(self)
-            profile = self.get_argument("profile")#获取参数profile的值
+            profile = self.get_query_argument("profile")#获取参数profile的值
             args = {'profile':profile}
             self.data["args"] = args
             self.data["headers"]["Host"] = self.request.host
-            print(self.data)
             self.write(self.data)
         except:
             self.send_error(status_code=404)

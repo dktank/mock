@@ -222,18 +222,17 @@ class testhttp(unittest.TestCase):
     def test_get149(self):
         '''测试No.149带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}'''
         get_url = "http://127.0.0.1:8008/get"
-        data = {u'profile': u'{"transcripts": {"\u6570\u5b66": 99.5, "\u8bed\u6587": 30}, "name": "\u5f20\u4e09", "hobbies": ["\u7bee\u7403", "\u8db3\u7403", "\u7fbd\u6bdb\u7403"]}'}
-        reqr = requests.get(get_url,data = data)
+        data = {u'profile': u'{"transcripts": {"\\u6570\\u5b66": 99.5, "\\u8bed\\u6587": 30}, "name": "\\u5f20\\u4e09", "hobbies": ["\\u7bee\\u7403", "\\u8db3\\u7403", "\\u7fbd\\u6bdb\\u7403"]}'}
+        reqr = requests.get(get_url,params = data)
         header = reqr.request.headers
+        url = reqr.request.url
         header["Host"] = "127.0.0.1:8008"
-        target_data = {u'args': {u'profile': u'{"transcripts": {"\u6570\u5b66": 99.5, "\u8bed\u6587": 30}, "name": "\u5f20\u4e09", "hobbies": ["\u7bee\u7403", "\u8db3\u7403", "\u7fbd\u6bdb\u7403"]}'},
+        target_data = {u'args': data,
                          u'headers': header,
                          u'origin': u'http://127.0.0.1:8008',
-                         u'url': u'http://127.0.0.1:8008/get?profile={"transcripts"%3A+{"\\u6570\\u5b66"%3A+99.5%2C+"\\u8bed\\u6587"%3A+30}%2C+"name"%3A+"\\u5f20\\u4e09"%2C+"hobbies"%3A+["\\u7bee\\u7403"%2C+"\\u8db3\\u7403"%2C+"\\u7fbd\\u6bdb\\u7403"]}'}
+                         u'url': url}
         self.assertEqual(reqr.status_code,200)
-        print(target_data)
         datas = reqr.json()
-        print(datas)
         equa = Equal
         equa.equal_fun(self,target_data,datas)
 
