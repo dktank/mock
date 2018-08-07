@@ -1,4 +1,4 @@
-from config.RewriteRequestHandler import RequestHandler
+from config.rewrite import RequestHandler
 
 #索引处理器
 class IndexHandler(RequestHandler):

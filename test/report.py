@@ -1,5 +1,6 @@
 import time,HTMLTestRunner
 import unittest
+
 if __name__ == "__main__":
     test_data = unittest.defaultTestLoader.discover("./",pattern="test.py")
     report_dir =r"./report"

@@ -1,7 +1,14 @@
-from config.PublicClass import Request
+from config.public import Request
 
 class PostHandler(Request):
+    """该Handler完成编号10协议：|/post|post|10|JSON字符串|No.145<br>指定请求头内容，然后发起请求|"""
+
     def post(self):
+        """处理POST请求,验证headers
+
+        变量header存放用户的请求头，lock存放验证请求头结果的变量初始化为真
+        字典form存放请求参数信息，赋值给self.data["form"]并将其作为响应数据输出
+        """
         header = self.request.headers
         appoint_header = {'Accept': '*/*',
                          'Accept-Encoding': 'gzip, deflate',
@@ -30,15 +37,3 @@ class PostHandler(Request):
             else:self.write("Your request header is not correct!")
         except :
             self.write_error(status_code=404)
-
-
-
-#|http://httpbin.org/cookies/set?passport=boyabigdata|-|-|-|No.145 <br>设置cookie，带参数passport=boyabigdata|
-class SetCookiesHandler(Request):
-    def get(self):
-        try:
-            passport = self.get_argument("passport") #获取参数passport的值
-            self.set_secure_cookie("passport", passport) #设置cookie
-            self.write(self.get_secure_cookie("passport")) #获得cookie
-        except:
-            self.write("No target parameters were found")
