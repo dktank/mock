@@ -1,20 +1,20 @@
 |URL|请求类型|返回内容|返回内容格式|备注|
 |:---:|:---:|:---:|:---:|:---:|
-|http://httpbin.org/get|get|1|JSON字符串|No.136|
-|http://httpbin.org/get?k1=v1&k2=v2|get|2|JSON字符串|No.137<br>带参数type=1&page=1|
-|http://httpbin.org/post|post|3|JSON字符串|No.137<br>带参数k1=v1&k2=v2|
-|http://httpbin.org/headers|get|4|JSON字符串|No.138<br>指定请求头内容，然后发起请求|
-|http://httpbin.org/post|post|5|JSON字符串|No.141<br>带参数<br>{'k2': 'v2', 'k1': ['v1', 'v3']}|
-|http://httpbin.org/get?type=1&page=1|get|6|JSON字符串|No.142<br>带参数type=1&page=1|
-|http://httpbin.org/get?type=1&page=2|get|7|JSON字符串|No.142<br>带参数type=1&page=2|
-|http://httpbin.org/get?type=2&page=1|get|8|JSON字符串|No.142<br>带参数type=2&page=1|
-|http://httpbin.org/get?type=2&page=2|get|9|JSON字符串|No.142<br>带参数type=2&page=2|
-|http://httpbin.org/post|post|10|JSON字符串|No.145<br>指定请求头内容，然后发起请求|
-|http://httpbin.org/get|get|11|JSON字符串|No.149<br>带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}|
-|http://httpbin.org/status/201|get|12|INT str|No.139<br>发起请求后的响应为response|
-|http://httpbin.org/status/400|get|13|INT str|No.139<br>发起请求后的响应为response|
-|http://httpbin.org/status/500|get|14|INT str|No.139<br>发起请求后的响应为response|
-|http://httpbin.org/cookies/set?passport=boyabigdata|-|15|-|No.145 <br>设置cookie，带参数passport=boyabigdata|
+|/get|get|1|JSON字符串|No.136|
+|/get?k1=v1&k2=v2|get|2|JSON字符串|No.137<br>带参数type=1&page=1|
+|/post|post|3|JSON字符串|No.137<br>带参数k1=v1&k2=v2|
+|/headers|get|4|JSON字符串|No.138<br>指定请求头内容，然后发起请求|
+|/post|post|5|JSON字符串|No.141<br>带参数<br>{'k2': 'v2', 'k1': ['v1', 'v3']}|
+|/get?type=1&page=1|get|6|JSON字符串|No.142<br>带参数type=1&page=1|
+|/get?type=1&page=2|get|7|JSON字符串|No.142<br>带参数type=1&page=2|
+|/get?type=2&page=1|get|8|JSON字符串|No.142<br>带参数type=2&page=1|
+|/get?type=2&page=2|get|9|JSON字符串|No.142<br>带参数type=2&page=2|
+|/post|post|10|JSON字符串|No.145<br>指定请求头内容，然后发起请求|
+|/get|get|11|JSON字符串|No.149<br>带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}|
+|/status/201|get|12|INT str|No.139<br>发起请求后的响应为response|
+|/status/400|get|13|INT str|No.139<br>发起请求后的响应为response|
+|/status/500|get|14|INT str|No.139<br>发起请求后的响应为response|
+|/cookies/set?passport=boyabigdata|-|15|-|No.145 <br>设置cookie，带参数passport=boyabigdata|
 
 
 
