@@ -1,4 +1,4 @@
-from config.public import Request
+from handlers.public import Request
 
 class PostHandler(Request):
     """该Handler完成编号10协议：|/post|post|10|JSON字符串|No.145<br>指定请求头内容，然后发起请求|"""

@@ -1,4 +1,4 @@
-from config.public import Request
+from handlers.public import Request
 
 
 class SetCookiesHandler(Request):

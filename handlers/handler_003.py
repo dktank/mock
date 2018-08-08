@@ -1,4 +1,4 @@
-from config.public import Request
+from handlers.public import Request
 
 
 class PostHandler(Request):
@@ -7,7 +7,8 @@ class PostHandler(Request):
     def post(self):
         """处理POST请求
 
-        变量k1、k2存放请求中的k1、k2参数且这两个参数都是包含单个值，变量form是包含着k1、k2变量的字典用于赋值给self.data["form"]
+        变量k1、k2存放请求中的k1、k2参数且这两个参数都是包含单个值，
+        变量form是包含着k1、k2变量的字典用于赋值给self.data["form"]
         """
         k1 = self.get_body_argument("k1")
         k2 = self.get_body_argument("k2")
