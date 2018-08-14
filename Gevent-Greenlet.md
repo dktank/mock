@@ -1,0 +1,189 @@
+﻿## Gevent-Greenlet学习
+
+### 1、二者关系
+> 在gevent中用到的主要模式是Greenlet, 它是以C扩展模块形式接入Python的轻量级协程。 Greenlet全部运行在主程序操作系统进程的内部，但它们被协作式地调度。
+**在任何时刻，只有一个协程在运行。**
+
+### 2、Gevent
+>1、gevent特点：
+
+ - 基于libev的快速事件循环，Linux上面的是epoll机制
+ - 基于greenlet的轻量级执行单元
+ - API复用了Python标准库里的内容
+ - 支持SSL的协作式sockets
+ - 可通过线程池或c-ares实现DNS查询
+ - 通过monkey patching功能来使得第三方模块变成协作式
+
+
+----------
+
+
+>2、代码示例
+```
+import random
+import gevent
+
+def task(pid):
+    """
+    Some non-deterministic task
+    """
+    gevent.sleep(random.randint(0,2)*0.001)
+    print('Task %s done' % pid)
+
+def synchronous():
+    for i in range(1,10):
+        task(i)
+
+def asynchronous():
+    threads = [gevent.spawn(task, i) for i in range(10)]
+    gevent.joinall(threads)
+
+print('Synchronous:')
+synchronous()
+
+print('Asynchronous:')
+asynchronous()
+
+print("结束")
+```
+>运行结果：
+```
+Synchronous:
+Task 1 done
+Task 2 done
+Task 3 done
+Task 4 done
+Task 5 done
+Task 6 done
+Task 7 done
+Task 8 done
+Task 9 done
+Asynchronous:
+Task 2 done
+Task 5 done
+Task 8 done
+Task 1 done
+Task 0 done
+Task 3 done
+Task 6 done
+Task 4 done
+Task 7 done
+Task 9 done
+结束
+```
+>分析结果：
+ 1、在同步的部分，所有的task都同步的执行， 结果当每个task在执行时主流程被阻塞(主流程的执行暂时停住)。
+ 2、异步的部分是将task函数封装到Greenlet内部线程的gevent.spawn。 初始化的greenlet列表存放在数组threads中，此数组被传给gevent.joinall 函数
+ 3、异步部分执行时阻塞当前流程，并执行所有给定的greenlet。执行流程只会在 所有greenlet执行完后才会继续向下走,最后执行：print("结束")。
+ 4、此外同步运行时间大约是每次停顿时间之和而异步执行时间大约是它们当中的最大停顿时间，因此**在受限于网络或IO的函数中使用gevent，这些函数会被协作式的调度， gevent的真正能力会得到发挥**。
+
+----------
+>3、greenlet具有确定性。在相同配置相同输入的情况下，它们总是 会产生相同的输出
+代码实例：
+```
+import time
+from gevent.pool import Pool
+
+def echo(i):
+    time.sleep(0.001)
+    return i
+
+p = Pool(10)
+run1 = [a for a in p.imap_unordered(echo, range(10))]
+run2 = [a for a in p.imap_unordered(echo, range(10))]
+run3 = [a for a in p.imap_unordered(echo, range(10))]
+run4 = [a for a in p.imap_unordered(echo, range(10))]
+
+print(run1 == run2 == run3 == run4)
+```
+输出结果
+```
+True
+```
+>注意:与如socket或文件等外部服务交互时,可能会因竞争条件而出现不确定性。<br>
+注：并发线程/进程都依赖于某个共享资源同时都尝试去修改它的时候, 就会出现竞争条件<br>
+避免方法：**始终避免所有全局的状态**
+### 3、创建Greenlets
+>常用模板代码:
+```
+import gevent
+from gevent import Greenlet
+
+def foo(message, n):
+    """
+    Each thread will be passed the message, and n arguments
+    in its initialization.
+    """
+    gevent.sleep(n)
+    print(message)
+
+# Initialize a new Greenlet instance running the named function
+# foo
+thread1 = Greenlet.spawn(foo, "Hello", 1)
+
+# Wrapper for creating and running a new Greenlet from the named
+# function foo, with the passed arguments
+thread2 = gevent.spawn(foo, "I live!", 2)
+
+# Lambda expressions
+thread3 = gevent.spawn(lambda x: (x+1), 2)
+
+threads = [thread1, thread2, thread3]
+
+# Block until all threads complete.
+gevent.joinall(threads)
+```
+### 4、Greenlet状态
+ - started -- Boolean, 指示此Greenlet是否已经启动
+ - ready() -- Boolean, 指示此Greenlet是否已经停止
+ - successful() -- Boolean, 指示此Greenlet是否已经停止而且没抛异常
+ - value -- 任意值, 此Greenlet代码返回的值
+ - exception -- 异常, 此Greenlet内抛出的未捕获异常
+ 注：Greenlet运行失败后可能未能成功抛出异常，不能停止运行，或消耗了太多的系统资源。
+### 5、终止程序
+>在主程序中监听SIGQUIT信号，在程序退出 调用gevent.shutdown。以防止当主程序(mainprogram)收到一个SIGQUIT信号时，不能成功做yield操作的Greenlet可能会令意外地挂起程序的执行。这导致了所谓的僵尸进程， 它需要在Python解释器之外被kill掉。
+代码示例：
+```
+import gevent
+import signal
+
+def run_forever():
+    gevent.sleep(1000)
+
+if __name__ == '__main__':
+    gevent.signal(signal.SIGQUIT, gevent.shutdown)
+    thread = gevent.spawn(run_forever)
+    thread.join()
+```
+###6、超时
+>超时是一种对一块代码或一个Greenlet的运行时间的约束。
+代码示例：
+```
+import gevent
+from gevent import Timeout
+
+seconds = 10
+
+timeout = Timeout(seconds)
+timeout.start()
+
+def wait():
+    gevent.sleep(10)
+
+try:
+    gevent.spawn(wait).join()
+except Timeout:
+    print('Could not complete')
+```
+### 猴子补丁
+>monkey.patch_socket()这个命令是用来改变标准socket库的。
+## 补充：
+> 1、协程比较于线程的优点：
+
+ - 协程极高的执行效率。因为子程序切换不是线程切换，而是由程序自身控制，因此，没有线程切换的开销，和多线程比，线程数量越多，协程的性能优势就越明显。
+ - 不需要多线程的锁机制，因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态就好了，所以执行效率比多线程高很多。
+
+----------
+>2、greenlet不是一种真正的并发机制，而是在同一线程内，在不同函数的执行代码块之间切换，实施“你运行一会、我运行一会”，并且在进行切换时必须指定何时切换以及切换到哪
+3、每个 greenlet  都拥有一个父 greenlet ，这是在 greenlet 初始化时就确定的。 当一个 greenlet 执行完毕后，执行权会切换到其父  greenlet 中。
+
