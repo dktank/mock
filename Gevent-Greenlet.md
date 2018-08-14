@@ -190,6 +190,60 @@ except Timeout:
  &emsp;&emsp;2. 获取到GIL【CPython解释器允许它执行指令】
 经常出现的情况是：已经满足条件1，却被条件2限制,因此无法有效利用多核。
 **理解：** CPython解释器中，GIL要求同一时间点只能一个线程执行，导致无法利用多核实现并发执行。多线程中线程之间切换时做大量重复工作（保存现场，准备新环境等），进而降低总的执行效率。多线程处理IO密集型任务时，有良好表现；处理计算密集型任务效果较差，可以使用多进程。
+>## **协程**
+协程：是比线程更小的执行单元，自带CPU上下文。因此可以把一个协程切换到另一个协程，只要这个过程中保存或恢复CPU上下文那么程序还是可以运行的。
+注：协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。
+协同程序：通过使代码消耗生成器在每个yield表达式之后send值send回生成器函数来工作。 生成器函数接收作为相应yield表达式的结果传递给send函数的值。
+代码示例：
+```
+def consumer():
+    r = ''
+    while True:
+        n = yield r
+        if not n:
+            return
+        print('[CONSUMER] Consuming %s...' % n)
+        r = '200 OK'
+
+def produce(c):
+    c.send(None)
+    n = 0
+    while n < 5:
+        n = n + 1
+        print('[PRODUCER] Producing %s...' % n)
+        r = c.send(n)
+        print('[PRODUCER] Consumer return: %s' % r)
+    c.close()
+
+c = consumer()
+produce(c)
+```
+```
+## 结果
+[PRODUCER] Producing 1...
+[CONSUMER] Consuming 1...
+[PRODUCER] Consumer return: 200 OK
+[PRODUCER] Producing 2...
+[CONSUMER] Consuming 2...
+[PRODUCER] Consumer return: 200 OK
+[PRODUCER] Producing 3...
+[CONSUMER] Consuming 3...
+[PRODUCER] Consumer return: 200 OK
+[PRODUCER] Producing 4...
+[CONSUMER] Consuming 4...
+[PRODUCER] Consumer return: 200 OK
+[PRODUCER] Producing 5...
+[CONSUMER] Consuming 5...
+[PRODUCER] Consumer return: 200 OK
+```
+>示例解析：
+注意到consumer函数是一个generator，把一个consumer传入produce后：
+> 1. 首先调用c.send(None)启动生成器；
+  2.然后，一旦生产了东西，通过c.send(n)切换到consumer执行；
+  3.consumer通过yield拿到消息，处理，又通过yield把结果传回；
+  4.produce拿到consumer处理的结果，继续生产下一条消息；
+  5.produce决定不生产了，通过c.close()关闭consumer，整个过程结束。
+
 
 
 ## 补充：
