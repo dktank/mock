@@ -1,4 +1,5 @@
 from handlers.public import Request
+import time
 
 class  GetHandler(Request):
     """该Handler完成编号6、7、8、9协议：|/get?type=2&page=1|get|*|JSON字符串|No.142<br>带参数type=2&page=1|"""

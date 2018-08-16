@@ -10,4 +10,5 @@ class Status500Handler(RequestHandler):
 
         发送500的HTTP状态码和该状态码原因：INTERNAL SERVER ERROR
         """
+
         self.send_error(status_code=500,reason="INTERNAL SERVER ERROR")

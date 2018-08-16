@@ -1,11 +1,14 @@
-from handlers import handler_001,handler_003,handler_004,handler_012,handler_005,handler_006,handler_010,handler_011,handler_015,handler_013,handler_014
+from handlers import handler_001,handler_003,handler_004,handler_012,handler_005,handler_006,handler_010,handler_011,handler_015,handler_013,handler_014,handler_016,handler_017,handler_018
 
 urls = [
+        #访问博雅大数据首页
+       (r'/', handler_018.GetHandler),
+
         #处理get请求
-       (r'/get', handler_011.GetHandler),
+       (r'/httpbin/get', handler_001.GetHandler),
 
         #处理post请求
-       (r'/post', handler_010.PostHandler),
+       (r'/httpbin/post', handler_003.PostHandler),
 
         #指定headers的请求
        (r'/headers', handler_004.GetHandler),
@@ -20,5 +23,8 @@ urls = [
        (r'/status/500',handler_014.Status500Handler),
 
         #设置cookies
-       (r'/cookies/set',handler_015.SetCookiesHandler)
+       (r'/cookies/set',handler_015.SetCookiesHandler),
+
+        #处理get请求
+       (r'/tag/.*?', handler_016.GetHandler),
       ]

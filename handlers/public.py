@@ -1,53 +1,99 @@
 from config.rewrite import RequestHandler
-
+import requests
 class Request(RequestHandler):
-    """获取的用户请求基本信息，并将他们集合成字典赋给属性data"""
+    """获取的用户请求基本信息，集合成字典并返回"""
 
-    def result1(self):
-         """属性data包含的信息较少，一般用域GET请求"""
-         args = {}
-         method = self.request.method
-         if method != "POST":
-             for key in self.request.arguments:
+    def get_result1(self,data):
+         """在GET请求处理并返回信息"""
+
+         url = self.request.full_url()
+         query = self.request.query
+         args = Parse_args.parse_query(self,query)
+
+         ##根据请求修改data里的数据
+         data["args"] = args
+         data["url"] = url
+         data["origin"] = "192.168.1.1"
+         if len(args)!=0:
+             data["headers"] = {
+                                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                                "Accept-Encoding": "gzip, deflate",
+                                "Accept-Language": "zh-cn",
+                                "Connection": "close",
+                                "Cookie": "_gauges_unique_day=1; _gauges_unique_month=1; _gauges_unique=1; _gauges_unique_year=1",
+                                "Host": "httpbin.org",
+                                "Upgrade-Insecure-Requests": "1",
+                                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38"
+                              }
+         data["headers"]["Host"] = "hackdata.cn"
+         return data
+
+
+
+    def post_result1(self,data):
+         """在POST请求处理并返回信息"""
+
+         url = self.request.full_url()
+         body = self.request.body.decode("utf-8")
+         form = Parse_args.parse_body(self,body)
+         ##根据请求修改data里的数据
+
+         data["form"] = form
+         data["headers"]["Host"] = "hackdata.cn"
+         data["origin"] = "192.168.1.1"
+         data["url"] = url
+         return data
+
+
+
+class Parse_args():
+    '''该类功能是解析请求参数，返回对应的字典形式'''
+
+    def parse_query(self,query_str):
+        args = {}
+        try:
+            query_strs = query_str.split("&")
+            args_list = []
+            for item in query_strs:
                 try:
-                    if isinstance(self.get_arguments(key),list) and len(self.get_arguments(key)) == 1:
-                        args[key] = self.get_argument(key)
-                    else:args[key] = self.get_arguments(key)
+                    item_list = item.split("=")
+                    args_list.append(item_list)
                 except:
                     pass
-         header = dict(self.request.headers)
-         protocol = self.request.protocol
-         host = self.request.host
-         uri = self.request.uri
-         origin = protocol+'://'+host
-         url = protocol+'://'+host+uri
-         self.data = {'args': args,
-                 'headers': header,
-                 'origin':origin,
-                 'url': url
-                 }
+            args = dict(args_list)
+            return args
+        except:
+            return args
 
 
-    def result2(self):
-        """属性data包含的信息较多，一般用域POST请求"""
-        args = {}
-        files = dict(self.request.files)
-        header = dict(self.request.headers)
-        protocol = self.request.protocol
-        host = self.request.host
-        uri = self.request.uri
-        origin = protocol+'://'+host
-        url = protocol+'://'+host+uri
-        self.data = {
-                  "args": args,
-                  "data": "",
-                  "files": files,
-                  "form": {},
-                  "headers":header,
-                  "json": None,
-                  "origin": origin,
-                  "url":url
-                }
+    def parse_body(self,body_str):
+        form = {}
+        try:
+            query_strs = body_str.split("&")
+            args_list = []
+            for item in query_strs:
+                try:
+                    item_list = item.split("=")
+                    args_list.append(item_list)
+                except:
+                    pass
+            length = len(args_list)
+            form = dict(args_list)
+            for item in form.keys():
+                for i in range(length):
+                    if args_list[i][0] == item and (args_list[i][1] != form[item]):
+                        if not isinstance(form[item],list):
+                            li = [args_list[i][1],form[item]]
+                            form[item] = li
+                        elif (args_list[i][1] not in form[item]):
+                            form[item].insert(-2,args_list[i][1])
+            return form
+        except:
+            return form
+
+
+
+
 
 
 

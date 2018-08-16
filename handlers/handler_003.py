@@ -10,9 +10,25 @@ class PostHandler(Request):
         变量k1、k2存放请求中的k1、k2参数且这两个参数都是包含单个值，
         变量form是包含着k1、k2变量的字典用于赋值给self.data["form"]
         """
-        k1 = self.get_body_argument("k1")
-        k2 = self.get_body_argument("k2")
-        form = {"k1":k1,"k2":k2}
-        Request.result2(self)
-        self.data["form"] = form
-        self.write(self.data)
+        data = {
+              "args": {},
+              "data": "",
+              "files": {},
+              "form": {
+                "k1": "v1",
+                "k2": "v23"
+              },
+              "headers": {
+                "Accept-Encoding": "identity",
+                "Connection": "close",
+                "Content-Length": "11",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Host": "httpbin.org",
+                "User-Agent": "Python-urllib/2.7"
+              },
+              "json": None,
+              "origin": "124.65.37.238",
+              "url": "http://httpbin.org/post"
+              }
+        res_data = Request.post_result1(self,data)
+        self.write(res_data)

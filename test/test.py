@@ -128,25 +128,26 @@ class testhttp(unittest.TestCase):
         self.assertEqual(reqr.reason,'INTERNAL SERVER ERROR')
 
     #No.141<br>带参数<br>{'k2': 'v2', 'k1': ['v1', 'v3']}
-    # def test_post(self):
-    #     '''测试No.141带参数{'k2': 'v2', 'k1': ['v1', 'v3']}'''
-    #     self.get_url = "http://127.0.0.1:8008/post"
-    #     reqr = requests.post(self.get_url,{'k2': 'v2', 'k1': ['v1', 'v3']})
-    #     self.assertEqual(reqr.status_code,200)
-    #     data = reqr.json()
-    #     self.assertEqual(data["args"],{})
-    #     self.assertEqual(data["data"],"")
-    #     self.assertEqual(data["files"],{})
-    #     self.assertEqual(data["form"],{"k1": ["v1", "v3"], "k2": "v2" })
-    #     self.assertEqual(data["headers"]["Accept-Encoding"],"identity")
-    #     self.assertEqual(data["headers"]["Connection"],"close")
-    #     self.assertEqual(data["headers"]["Content-Length"],"17")
-    #     self.assertEqual(data["headers"]["Content-Type"],"application/x-www-form-urlencoded")
-    #     self.assertEqual(data["headers"]["Host"],"httpbin.org")
-    #     self.assertEqual(data["headers"]["User-Agent"],"Python-urllib/2.7")
-    #     self.assertEqual(data["json"],"null")
-    #     self.assertEqual(data["origin"],"124.65.37.238")
-    #     self.assertEqual(data["url"],"http://httpbin.org/post")
+    def test_post(self):
+        '''测试No.141带参数{'k2': 'v2', 'k1': ['v1', 'v3']}'''
+        self.get_url = "http://127.0.0.1:8008/httpbin/post"
+        reqr = requests.post(self.get_url,{'k2': 'v2', 'k1': ['v1', 'v3']})
+        self.assertEqual(reqr.status_code,200)
+        data = reqr.json()
+        print(data)
+        # self.assertEqual(data["args"],{})
+        # self.assertEqual(data["data"],"")
+        # self.assertEqual(data["files"],{})
+        # self.assertEqual(data["form"],{"k1": ["v1", "v3"], "k2": "v2" })
+        # self.assertEqual(data["headers"]["Accept-Encoding"],"identity")
+        # self.assertEqual(data["headers"]["Connection"],"close")
+        # self.assertEqual(data["headers"]["Content-Length"],"17")
+        # self.assertEqual(data["headers"]["Content-Type"],"application/x-www-form-urlencoded")
+        # self.assertEqual(data["headers"]["Host"],"httpbin.org")
+        # self.assertEqual(data["headers"]["User-Agent"],"Python-urllib/2.7")
+        # self.assertEqual(data["json"],"null")
+        # self.assertEqual(data["origin"],"124.65.37.238")
+        # self.assertEqual(data["url"],"http://httpbin.org/post")
      #No.142<br>带参数type=1&page=1
     # def test_get(self):
     #     '''测试No.142带参数type=1&page=1'''
@@ -235,6 +236,18 @@ class testhttp(unittest.TestCase):
         datas = reqr.json()
         equa = Equal
         equa.equal_fun(self,target_data,datas)
+
+
+    def test_cookie(self):
+        req_url = "http://127.0.0.1:8008/cookies/set?passport=boyabigdata"
+        reqr = requests.get(req_url)
+        cookie = reqr.raw.read()
+        print(cookie)
+
+    def test_12(self):
+        req_url = "https://movie.douban.com/tag/%E8%8B%B1%E5%9B%BD%20%E5%96%9C%E5%89%A7%202015"
+        reqr = requests.get(req_url)
+        print(reqr.text)
 
 if __name__ == "__main__":
     unittest.main()
