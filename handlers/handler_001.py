@@ -1,4 +1,5 @@
 from handlers.public import Request
+import urllib,json
 
 class GetHandler(Request):
     '''该Handler完成编号1、2、6、7、8、9协议：
@@ -6,6 +7,6 @@ class GetHandler(Request):
     '''
     def get(self):
         """处理GET请求,允许url带参数"""
-        res_data = Request.get_result1(self)
-        self.write(res_data)
 
+        res_data = Request.get_result1(self)
+        self.write( res_data)
