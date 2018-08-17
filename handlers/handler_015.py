@@ -1,16 +1,14 @@
 from handlers.public import Request
 
 
-class SetCookiesHandler(Request):
-    """该Handler完成编号10协议：|/cookies/set?passport=boyabigdata|-|-|-|No.145 <br>设置cookie，带参数passport=boyabigdata|"""
+class GetHandler(Request):
+    """该Handler完成编号15协议：|/douban/robots.txt|get|15|txt|No.154|"""
 
     def get(self):
-        """处理GET请求
+        """处理GET请求,传出robots.txt"""
 
-        变量passport存放请求中的passport参数，设置cookie的值为passport
-        """
-        try:
-            passport = self.get_argument("passport")
-            self.set_secure_cookie("passport", passport)
-        except:
-            self.write("No target parameters were found")
+        #设置Content-Type值为text/plain以纯文本格式发送
+        self.set_header("Content-Type", "text/plain")
+        self.render("robots.txt")
+
+

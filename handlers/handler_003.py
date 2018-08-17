@@ -2,17 +2,26 @@ from handlers.public import Request
 
 
 class PostHandler(Request):
-    """该Handler完成编号3协议：|/post|post|3|JSON字符串|No.137<br>带参数k1=v1&k2=v2|"""
+    """该Handler完成编号3，5,10协议：/httpbin/post|post|3|JSON|No.137<br> body{ "k1": "v1", "k2": "v2"} |
+                             和/httpbin/post|post|5|JSON|No.141<br>带参数<br>{'k2': 'v2', 'k1': ['v1', 'v3']}|
+                             和|/httpbin/post|post|10|JSON|No.145<br>post内容：
+                              {'custname':'博雅大数据学院','custtel':'010-62756975','custemail': 'service@boyabigdata.cn','delivery':'18:00',
+                              'comments':'北京市海淀区北四环西路67号中关村国际创新大厦603',
+                              'size':'large','topping':'mushroom','cheese'}|
+    """
 
     def post(self):
-        """处理POST请求
-
-        变量k1、k2存放请求中的k1、k2参数且这两个参数都是包含单个值，
-        变量form是包含着k1、k2变量的字典用于赋值给self.data["form"]
-        """
-        k1 = self.get_body_argument("k1")
-        k2 = self.get_body_argument("k2")
-        form = {"k1":k1,"k2":k2}
-        Request.result2(self)
-        self.data["form"] = form
-        self.write(self.data)
+        """处理POST请求 """
+        ##数据初始化
+        data = {
+              "args": {},
+              "data": "",
+              "files": {},
+              "form": {},
+              "headers": {},
+              "json": None,
+              "origin": "",
+              "url": ""
+              }
+        res_data = Request.post_result1(self,data)
+        self.write(res_data)

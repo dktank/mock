@@ -1,12 +1,11 @@
 from handlers.public import Request
 
 class GetHandler(Request):
-    '''该Handler完成编号1、2两个协议：
-            |/get|get|1|JSON字符串|No.136| 和 |/get?k1=v1&k2=v2|get|2|JSON字符串|No.137<br>带参数type=1&page=1|
+    '''该Handler完成编号1、2、6、7、8、9协议：
+            |/httpbin/get|get|1|JSON|No.136|，以及链接中含参数
     '''
-
     def get(self):
         """处理GET请求,允许url带参数"""
+        res_data = Request.get_result1(self)
+        self.write(res_data)
 
-        Request.result1(self)
-        self.write(self.data)

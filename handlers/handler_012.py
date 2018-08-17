@@ -1,11 +1,11 @@
-from config.rewrite import RequestHandler
+from handlers.public import Request
 
+class  GetHandler(Request):
+    """该Handler完成编号12协议：|/douban/tag/%E8%8B%B1%E5%9B%BD%20%E5%96%9C%E5%89%A7%202015|get|12|html|No.143 带参数
+        {'start':'20','type':'S'}|
+    """
 
-class Status201Handler(RequestHandler):
-    """该Handler完成编号12协议：|/status/201|get|response.code 201 <br>response.msg 'CREATED'|INT str|No.139<br>发起请求后的响应为response|"""
     def get(self):
-        """处理GET请求
+        """处理GET请求"""
+        self.render("英国 喜剧 2015.html")
 
-        发送201的HTTP状态码和该状态码原因：CREATED
-        """
-        self.send_error(status_code=201,reason="CREATED")

@@ -209,9 +209,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>标题：Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2018-08-07 15:23:29</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:00.129075</p>
-<p class='attribute'><strong>Status:</strong> Pass 7</p>
+<p class='attribute'><strong>Start Time:</strong> 2018-08-08 13:49:36</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.105007</p>
+<p class='attribute'><strong>Status:</strong> Pass 8</p>
 
 <p class='description'>测试结果总览:</p>
 </div>
@@ -245,52 +245,77 @@ function showOutput(id, name) {
 
 <tr class='passClass'>
     <td>test.testhttp</td>
-    <td>7</td>
-    <td>7</td>
+    <td>8</td>
+    <td>8</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',7)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c1',8)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_cookie</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        pass</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: &lt;RequestsCookieJar[]&gt;
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_errorheaders: 测试No.138指定请求头内容，然后发起请求  错误请求头</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.2' class='hiddenRow'>
+<tr id='pt1.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_get149: 测试No.149带参数{'name':'张三', 'hobbies': ['篮球','足球','羽毛球'], 'transcripts':{'语文':30, '数学': 99.5}}</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.3' class='hiddenRow'>
+<tr id='pt1.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_headers: 测试No.138指定请求头内容，然后发起请求  正确请求头</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.4' class='hiddenRow'>
+<tr id='pt1.5' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_post145: 测试No.145指定请求头内容，然后发起请求</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.5' class='hiddenRow'>
+<tr id='pt1.6' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status201: 验证状态码201</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.6' class='hiddenRow'>
+<tr id='pt1.7' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status400: 验证状态码400</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.7' class='hiddenRow'>
+<tr id='pt1.8' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status500: 验证状态码500</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>7</td>
-    <td>7</td>
+    <td>8</td>
+    <td>8</td>
     <td>0</td>
     <td>0</td>
     <td>&nbsp;</td>
