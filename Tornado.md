@@ -27,11 +27,11 @@ if __name__ == "__main__":
     tornado.ioloop.IOLoop.current().start()
 ```
 > 2、**RequestHandler**：HTTP请求处理的基类。
- 3、RequestHandler.get_argument(name, default=[], strip=True)：
+>3、RequestHandler.get_argument(name, default=[], strip=True)：
 >>返回指定的name参数的值.
-  如果没有提供默认值, 那么这个参数将被视为是必须的, 并且当 找不到这个参数的时候我们会抛出一个 MissingArgumentError.
-  如果一个参数在url上出现多次, 我们返回最后一个值.
-  返回值永远是unicode.
+>>如果没有提供默认值, 那么这个参数将被视为是必须的, 并且当 找不到这个参数的时候我们会抛出一个 MissingArgumentError.
+>>如果一个参数在url上出现多次, 我们返回最后一个值.
+>>返回值永远是unicode.
 
 > 4、RequestHandler.get_arguments(name, strip=True):
 >> 返回指定name的参数列表.
@@ -113,6 +113,7 @@ RequestStartLine(method='GET', path='/foo', version='HTTP/1.1')
 ResponseStartLine(version='HTTP/1.1', code=200, reason='OK')
 
 ----------
+
 ## tornado.httpserver — 非阻塞 HTTP server
 >1、tornado.httpserver.HTTPServer(*args, **kwargs)：非阻塞，单线程 HTTP server。
 >2、简单的单进程:
@@ -151,6 +152,50 @@ def handle_request(response):
 
 http_client = AsyncHTTPClient()
 http_client.fetch("http://www.google.com/", handle_request)
+```
+
+##tornado.ioloop.IOLoop类
+>利用epoll (Linux) 或者 kqueue (BSD and Mac OS X)水平触发I/O循环
+
+###IOLoop的方法：
+- IOLoop.current(instance=True)：返回当前线程的IOLoop
+- IOLoop.make_current（）没有当前 IOLoop 时创建的 IOLoop 并自动绑定这个IOLoop
+- IOLoop.clear_current() 在当前线程中清除IOLoop
+- IOLoop.start()启动当前IOLoop
+- IOLoop.stop()停止当前IOLoop
+- IOLoop.close（all_fds = False ）关闭IOLoop，释放所有使用的资源
+##协同程序和并发
+```
+##基于回调的异步处理程序
+class AsyncHandler(RequestHandler):
+    @asynchronous
+    def get(self):
+        http_client = AsyncHTTPClient()
+        http_client.fetch("http://example.com",
+                          callback=self.on_fetch)
+
+    def on_fetch(self, response):
+        do_something_with_response(response)
+        self.render("template.html")
+        
+##改为协程
+class GenAsyncHandler(RequestHandler):
+    @gen.coroutine
+    def get(self):
+        http_client = AsyncHTTPClient()
+        response = yield http_client.fetch("http://example.com")
+        do_something_with_response(response)
+        self.render("template.html")
+##生成一个列表或词典Futures的写法
+@gen.coroutine
+def get(self):
+    http_client = AsyncHTTPClient()
+    response1, response2 = yield [http_client.fetch(url1),
+                                  http_client.fetch(url2)]
+    response_dict = yield dict(response3=http_client.fetch(url3),
+                               response4=http_client.fetch(url4))
+    response3 = response_dict['response3']
+    response4 = response_dict['response4']
 ```
 
 

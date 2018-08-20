@@ -12,7 +12,7 @@ urls = [
        (r'/httpbin/headers', handler_004.GetHandler),
 
         #处理豆瓣首页页请求
-       (r'/douban', handler_013.GetHandler),
+       (r'/douban/?', handler_013.GetHandler),
 
         #处理豆瓣tag页面请求
        (r'/douban/tag/(?P<tag_name>.*?)', handler_012.GetHandler),
