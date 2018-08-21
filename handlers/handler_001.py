@@ -1,5 +1,4 @@
 from handlers.public import Request
-import urllib,json
 
 class GetHandler(Request):
     '''该Handler完成编号1、2、6、7、8、9协议：
@@ -10,3 +9,5 @@ class GetHandler(Request):
 
         res_data = Request.get_result1(self)
         self.write( res_data)
+
+

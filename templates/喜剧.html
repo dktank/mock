@@ -216,32 +216,32 @@
   </div>
 </div>
 
-{#<script id="suggResult" type="text/x-jquery-tmpl">#}
-{#  <li data-link="{{= url}}">#}
-{#            <a href="{{= url}}" onclick="moreurl(this, {from:'movie_search_sugg', query:'{{= keyword }}', subject_id:'{{= id}}', i: '{{= index}}', type: '{{= type}}'})">#}
-{#            <img src="{{= img}}" width="40" />#}
-{#            <p>#}
-{#                <em>{{= title}}</em>#}
-{#                {{if year}}#}
-{#                    <span>{{= year}}</span>#}
-{#                {{/if}}#}
-{#                {{if sub_title}}#}
-{#                    <br /><span>{{= sub_title}}</span>#}
-{#                {{/if}}#}
-{#                {{if address}}#}
-{#                    <br /><span>{{= address}}</span>#}
-{#                {{/if}}#}
-{#                {{if episode}}#}
-{#                    {{if episode=="unknow"}}#}
-{#                        <br /><span>集数未知</span>#}
-{#                    {{else}}#}
-{#                        <br /><span>共{{= episode}}集</span>#}
-{#                    {{/if}}#}
-{#                {{/if}}#}
-{#            </p>#}
-{#        </a>#}
-{#        </li>#}
-{#  </script>#}
+<script id="suggResult" type="text/x-jquery-tmpl">
+  <li data-link="{{= url}}">
+            <a href="{{= url}}" onclick="moreurl(this, {from:'movie_search_sugg', query:'{{= keyword }}', subject_id:'{{= id}}', i: '{{= index}}', type: '{{= type}}'})">
+            <img src="{{= img}}" width="40" />
+            <p>
+                <em>{{= title}}</em>
+                {{if year}}
+                    <span>{{= year}}</span>
+                {{/if}}
+                {{if sub_title}}
+                    <br /><span>{{= sub_title}}</span>
+                {{/if}}
+                {{if address}}
+                    <br /><span>{{= address}}</span>
+                {{/if}}
+                {{if episode}}
+                    {{if episode=="unknow"}}
+                        <br /><span>集数未知</span>
+                    {{else}}
+                        <br /><span>共{{= episode}}集</span>
+                    {{/if}}
+                {{/if}}
+            </p>
+        </a>
+        </li>
+  </script>
 
 
 

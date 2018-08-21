@@ -6,7 +6,7 @@
 **在任何时刻，只有一个协程在运行。**
 
 ### 2、Gevent
->1、gevent特点：
+####1、gevent特点：
 
  - 基于libev的快速事件循环，Linux上面的是epoll机制
  - 基于greenlet的轻量级执行单元
@@ -19,7 +19,7 @@
 ----------
 
 
->2、代码示例
+####2、代码示例
 ```
 import random
 import gevent
@@ -73,13 +73,14 @@ Task 9 done
 结束
 ```
 >分析结果：
- 1、在同步的部分，所有的task都同步的执行， 结果当每个task在执行时主流程被阻塞(主流程的执行暂时停住)。
- 2、异步的部分是将task函数封装到Greenlet内部线程的gevent.spawn。 初始化的greenlet列表存放在数组threads中，此数组被传给gevent.joinall 函数
- 3、异步部分执行时阻塞当前流程，并执行所有给定的greenlet。执行流程只会在 所有greenlet执行完后才会继续向下走,最后执行：print("结束")。
- 4、此外同步运行时间大约是每次停顿时间之和而异步执行时间大约是它们当中的最大停顿时间，因此**在受限于网络或IO的函数中使用gevent，这些函数会被协作式的调度， gevent的真正能力会得到发挥**。
+
+ 1. 在同步的部分，所有的task都同步的执行， 结果当每个task在执行时主流程被阻塞(主流程的执行暂时停住)。
+ 2. 异步的部分是将task函数封装到Greenlet内部线程的gevent.spawn。 初始化的greenlet列表存放在数组threads中，此数组被传给gevent.joinall 函数
+ 3. 异步部分执行时阻塞当前流程，并执行所有给定的greenlet。执行流程只会在 所有greenlet执行完后才会继续向下走,最后执行：print("结束")。
+ 4. 此外同步运行时间大约是每次停顿时间之和而异步执行时间大约是它们当中的最大停顿时间，因此**在受限于网络或IO的函数中使用gevent，这些函数会被协作式的调度， gevent的真正能力会得到发挥**。
 
 ----------
->3、greenlet具有确定性。在相同配置相同输入的情况下，它们总是 会产生相同的输出
+####3、greenlet具有确定性。在相同配置相同输入的情况下，它们总是 会产生相同的输出
 代码实例：
 ```
 import time
@@ -141,6 +142,7 @@ gevent.joinall(threads)
  - value -- 任意值, 此Greenlet代码返回的值
  - exception -- 异常, 此Greenlet内抛出的未捕获异常
  注：Greenlet运行失败后可能未能成功抛出异常，不能停止运行，或消耗了太多的系统资源。
+
 ### 5、终止程序
 >在主程序中监听SIGQUIT信号，在程序退出 调用gevent.shutdown。以防止当主程序(mainprogram)收到一个SIGQUIT信号时，不能成功做yield操作的Greenlet可能会令意外地挂起程序的执行。这导致了所谓的僵尸进程， 它需要在Python解释器之外被kill掉。
 代码示例：
@@ -183,68 +185,51 @@ except Timeout:
 ----------
 ##协程和线程
 >### **全局解释器锁(GIL)**
-1、GIL在多线程情况下，保护共享资源，为了不让多个线程同时操作共享资源，导致不可预期的结果而加上的锁，在一个线程操作共享资源时，其他线程请求该资源，只能等待GIL解锁
-2、GIL只允许一个线程来控制Python解释器。这意味着在任何时间点只有一个线程可以处于执行状态，即使在具有多个CPU核心的多线程体系结构中，GIL也是一次只允许一个线程执行。对执行单线程程序无太大影响。对CPU绑定和多线程代码影响较大。
-3、CPython解释器中，线程的想要执行CPU指令需要2个条件：
- &emsp;&emsp;1. 被操作系统调度出来【操作系统允许它占用CPU】
- &emsp;&emsp;2. 获取到GIL【CPython解释器允许它执行指令】
+1. GIL在多线程情况下，保护共享资源，为了不让多个线程同时操作共享资源，导致不可预期的结果而加上的锁，在一个线程操作共享资源时，其他线程请求该资源，只能等待GIL解锁
+2. GIL只允许一个线程来控制Python解释器。这意味着在任何时间点只有一个线程可以处于执行状态，即使在具有多个CPU核心的多线程体系结构中，GIL也是一次只允许一个线程执行。对执行单线程程序无太大影响。对CPU绑定和多线程代码影响较大。
+3. CPython解释器中，线程的想要执行CPU指令需要2个条件：
+- (1)被操作系统调度出来【操作系统允许它占用CPU】
+- (2)获取到GIL【CPython解释器允许它执行指令】
 经常出现的情况是：已经满足条件1，却被条件2限制,因此无法有效利用多核。
 **理解：** CPython解释器中，GIL要求同一时间点只能一个线程执行，导致无法利用多核实现并发执行。多线程中线程之间切换时做大量重复工作（保存现场，准备新环境等），进而降低总的执行效率。多线程处理IO密集型任务时，有良好表现；处理计算密集型任务效果较差，可以使用多进程。
 >## **协程**
-协程：是一个程序组件，一个线程中可以拥有多个协程，在一个拥有多个协程的线程执行时会阻塞父线程，当一个正在执行的协程遇到IO操作时可以自动切换到线程中的其他协程，在适当的时候再返回来接着执行，所以一个线程执行代码段（程序）的顺序会因协程来回调度而不同。因为协程都在一个线程中所以不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态，这样资源开销非常低，执行速度非常快。
-注：协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。
-协同程序：通过使代码消耗生成器在每个yield表达式之后send值send回生成器函数来工作。 生成器函数接收作为相应yield表达式的结果传递给send函数的值。
-代码示例：
-```
-def consumer():
-    r = ''
-    while True:
-        n = yield r
-        if not n:
-            return
-        print('[CONSUMER] Consuming %s...' % n)
-        r = '200 OK'
+**协程**：是一个程序组件，一个线程中可以拥有多个协程，在一个拥有多个协程的线程执行时会阻塞父线程，当一个正在执行的协程遇到IO操作时可以自动切换到线程中的其他协程，在适当的时候再返回来接着执行，所以一个线程执行代码段（程序）的顺序会因协程来回调度而不同。因为协程都在一个线程中所以不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态，这样资源开销非常低，执行速度非常快。
+**注**：协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。
 
-def produce(c):
-    c.send(None)
-    n = 0
-    while n < 5:
-        n = n + 1
-        print('[PRODUCER] Producing %s...' % n)
-        r = c.send(n)
-        print('[PRODUCER] Consumer return: %s' % r)
-    c.close()
-
-c = consumer()
-produce(c)
+## **python实现协程模块**
+- Gevent+Greenlet
+- **asyncio**是主要由@asyncio.coroutine加yield from实现协程
 ```
-```
-## 结果
-[PRODUCER] Producing 1...
-[CONSUMER] Consuming 1...
-[PRODUCER] Consumer return: 200 OK
-[PRODUCER] Producing 2...
-[CONSUMER] Consuming 2...
-[PRODUCER] Consumer return: 200 OK
-[PRODUCER] Producing 3...
-[CONSUMER] Consuming 3...
-[PRODUCER] Consumer return: 200 OK
-[PRODUCER] Producing 4...
-[CONSUMER] Consuming 4...
-[PRODUCER] Consumer return: 200 OK
-[PRODUCER] Producing 5...
-[CONSUMER] Consuming 5...
-[PRODUCER] Consumer return: 200 OK
-```
->示例解析：
-注意到consumer函数是一个generator，把一个consumer传入produce后：
-> 1. 首先调用c.send(None)启动生成器；
-  2.然后，一旦生产了东西，通过c.send(n)切换到consumer执行；
-  3.consumer通过yield拿到消息，处理，又通过yield把结果传回；
-  4.produce拿到consumer处理的结果，继续生产下一条消息；
-  5.produce决定不生产了，通过c.close()关闭consumer，整个过程结束。
+import asyncio
 
+@asyncio.coroutine
+def hello():
+    print("Hello world!")
+    # 异步调用asyncio.sleep(1):
+    r = yield from asyncio.sleep(1)
+    print("Hello again!")
 
+# 获取EventLoop:
+loop = asyncio.get_event_loop()
+# 执行coroutine
+loop.run_until_complete(hello())
+loop.close()
+```
+- **async/await**是由async和await实现协程,相比上面的代码简介易读。
+```
+import threading
+import asyncio
+
+async def hello():
+    print('Hello world! (%s)' % threading.currentThread())
+    await asyncio.sleep(1)
+    print('Hello again! (%s)' % threading.currentThread())
+
+loop = asyncio.get_event_loop()
+tasks = [hello(), hello()]
+loop.run_until_complete(asyncio.wait(tasks))
+loop.close()
+```
 
 ## 补充：
 > 1、协程比较于线程的优点：

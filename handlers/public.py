@@ -38,7 +38,6 @@ class Request(RequestHandler):
              if len(values)==1:
                  values = "".join(values)
              form[key] = values
-
          ##根据请求修改data里的数据
          data['form'] = form
          data['headers'] = dict(self.request.headers)
