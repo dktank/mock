@@ -209,9 +209,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>标题：Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2018-08-20 17:51:55</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:00.094007</p>
-<p class='attribute'><strong>Status:</strong> Pass 6</p>
+<p class='attribute'><strong>Start Time:</strong> 2018-08-21 14:27:50</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.135006</p>
+<p class='attribute'><strong>Status:</strong> Pass 9 Failure 1</p>
 
 <p class='description'>测试结果总览:</p>
 </div>
@@ -243,13 +243,13 @@ function showOutput(id, name) {
     <td>View</td>
 </tr>
 
-<tr class='passClass'>
+<tr class='failClass'>
     <td>test.Testhttp: 单元测试类</td>
-    <td>6</td>
-    <td>6</td>
+    <td>10</td>
+    <td>9</td>
+    <td>1</td>
     <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',6)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c1',10)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
@@ -269,20 +269,37 @@ function showOutput(id, name) {
 
 <tr id='pt1.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_getheaders: 指定headers并验证的get请求</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_postform: 测试多个参数，一个参数含多个值的post请求</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='ft1.6' class='none'>
+    <td class='failCase'><div class='testcase'>test_postforms: 测试指定headers，且有多个参数，一个参数含多个值的post请求</div></td>
     <td colspan='5' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
-        pass</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.6')" >
+        fail</a>
 
-    <div id='div_pt1.4' class="popup_window">
+    <div id='div_ft1.6' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.6').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
         
-pt1.4: {'headers': {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36', 'Accept-Encoding': 'gzip, deflate', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Host': 'httpbin.org', 'Referer': 'http://httpbin.org'}}
+ft1.6: http://hackdata.cn/httpbin/post http://127.0.0.1:8008/httpbin/post
+Traceback (most recent call last):
+  File "F:\tornadodemo\my_venv\Scripts\myProject\test\test.py", line 63, in test_postforms
+    self.assertEqual(data_set["url"],test_url)
+AssertionError: 'http://hackdata.cn/httpbin/post' != 'http://127.0.0.1:8008/httpbin/post'
+- http://hackdata.cn/httpbin/post
++ http://127.0.0.1:8008/httpbin/post
+
 
 
         </pre>
@@ -292,21 +309,31 @@ pt1.4: {'headers': {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_
     </td>
 </tr>
 
-<tr id='pt1.5' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_postform: 测试多个参数，一个参数含多个值的post请求</div></td>
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_setcookie: 验证cookie设置是否成功</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.6' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_postforms: 测试指定headers，且有多个参数，一个参数含多个值的post请求</div></td>
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_status: 验证500状态码</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_status201: 验证201状态码</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_status400: 验证400状态码</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>6</td>
-    <td>6</td>
-    <td>0</td>
+    <td>10</td>
+    <td>9</td>
+    <td>1</td>
     <td>0</td>
     <td>&nbsp;</td>
 </tr>

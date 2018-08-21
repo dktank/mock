@@ -51,6 +51,7 @@ class Testhttp(unittest.TestCase):
                  'Upgrade-Insecure-Requests': '1',
                  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'}
         reqr = requests.post(url,data=data,headers=headers)
+        test_url = reqr.url
         self.assertEqual(reqr.status_code, 200)
         data_set = reqr.json()
         for items in data:
@@ -58,6 +59,8 @@ class Testhttp(unittest.TestCase):
         for item in headers:
             self.assertEqual(data_set["headers"][item], headers[item])
         self.assertEqual(data_set["origin"], "192.168.1.1")
+        print(data_set["url"],test_url)
+        self.assertEqual(data_set["url"],test_url)
 
     def test_getheaders(self):
         """指定headers并验证的get请求"""
@@ -71,9 +74,34 @@ class Testhttp(unittest.TestCase):
         reqr = requests.get(url,headers=headers)
         self.assertEqual(reqr.status_code,200)
         data_set = reqr.json()
-        print(data_set)
         for item in headers:
             self.assertEqual(data_set["headers"][item],headers[item])
+
+    def test_status201(self):
+        """验证201状态码"""
+        url = "http://127.0.0.1:8008/httpbin/status/201"
+        text1 = Public
+        text1.status_code(self, url,201 )
+
+    def test_status400(self):
+        """验证400状态码"""
+        url = "http://127.0.0.1:8008/httpbin/status/400"
+        text1 = Public
+        text1.status_code(self, url,400 )
+
+    def test_status(self):
+        """验证500状态码"""
+        url = "http://127.0.0.1:8008/httpbin/status/500"
+        text1 = Public
+        text1.status_code(self, url,500 )
+
+    def test_setcookie(self):
+        '''验证cookie设置是否成功'''
+        url = "http://127.0.0.1:8008/httpbin/cookies/set?passport=boyabigdata"
+        reqr = requests.get(url)
+        self.assertEqual(reqr.status_code, 200)
+        data = reqr.json()
+        self.assertEqual(data["cookies"]["passport"],"boyabigdata")
 
 
 
@@ -105,6 +133,12 @@ class Public(unittest.TestCase):
 
     def html(self):
         pass
+
+    def status_code(self,url,code):
+        """验证访问的错误页的状态码"""
+        reqr = requests.get(url)
+        self.assertEqual(reqr.status_code, code)
+
 
 if __name__=="__main__":
     unittest.main()
