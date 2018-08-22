@@ -209,9 +209,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>标题：Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2018-08-21 14:27:50</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:00.135006</p>
-<p class='attribute'><strong>Status:</strong> Pass 9 Failure 1</p>
+<p class='attribute'><strong>Start Time:</strong> 2018-08-22 18:04:56</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.299948</p>
+<p class='attribute'><strong>Status:</strong> Pass 16</p>
 
 <p class='description'>测试结果总览:</p>
 </div>
@@ -243,63 +243,76 @@ function showOutput(id, name) {
     <td>View</td>
 </tr>
 
-<tr class='failClass'>
+<tr class='passClass'>
     <td>test.Testhttp: 单元测试类</td>
-    <td>10</td>
-    <td>9</td>
-    <td>1</td>
+    <td>16</td>
+    <td>16</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',10)">Detail</a></td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',16)">Detail</a></td>
 </tr>
 
 <tr id='pt1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_get_noarg: 测试无参数的get请求</div></td>
+    <td class='none'><div class='testcase'>test_donghua: 验证动画页内容</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_getarg: 测试多个参数，一个参数含一个值的get请求</div></td>
+    <td class='none'><div class='testcase'>test_get_noarg: 测试无参数的get请求</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_getargs: 测试多个参数，一个参数含多个值的get请求</div></td>
+    <td class='none'><div class='testcase'>test_getarg: 测试多个参数，一个参数含一个值的get请求</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.4' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_getheaders: 指定headers并验证的get请求</div></td>
+    <td class='none'><div class='testcase'>test_getargs: 测试多个参数，一个参数含多个值的get请求</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_getheaders: 指定headers并验证的get请求</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_index: 验证豆瓣首页内容</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_juqing: 验证剧情页内容</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_kehuan: 验证科幻页内容</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.9' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_postform: 测试多个参数，一个参数含多个值的post请求</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='ft1.6' class='none'>
-    <td class='failCase'><div class='testcase'>test_postforms: 测试指定headers，且有多个参数，一个参数含多个值的post请求</div></td>
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_postforms: 测试指定headers，且有多个参数，一个参数含多个值的post请求</div></td>
     <td colspan='5' align='center'>
 
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.6')" >
-        fail</a>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.10')" >
+        pass</a>
 
-    <div id='div_ft1.6' class="popup_window">
+    <div id='div_pt1.10' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.6').style.display = 'none' " >
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.10').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
         
-ft1.6: http://hackdata.cn/httpbin/post http://127.0.0.1:8008/httpbin/post
-Traceback (most recent call last):
-  File "F:\tornadodemo\my_venv\Scripts\myProject\test\test.py", line 63, in test_postforms
-    self.assertEqual(data_set["url"],test_url)
-AssertionError: 'http://hackdata.cn/httpbin/post' != 'http://127.0.0.1:8008/httpbin/post'
-- http://hackdata.cn/httpbin/post
-+ http://127.0.0.1:8008/httpbin/post
-
+pt1.10: http://hackdata.cn/httpbin/post http://127.0.0.1:8008/httpbin/post
 
 
         </pre>
@@ -309,31 +322,41 @@ AssertionError: 'http://hackdata.cn/httpbin/post' != 'http://127.0.0.1:8008/http
     </td>
 </tr>
 
-<tr id='pt1.7' class='hiddenRow'>
+<tr id='pt1.11' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_setcookie: 验证cookie设置是否成功</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.8' class='hiddenRow'>
+<tr id='pt1.12' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status: 验证500状态码</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.9' class='hiddenRow'>
+<tr id='pt1.13' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status201: 验证201状态码</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt1.10' class='hiddenRow'>
+<tr id='pt1.14' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_status400: 验证400状态码</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_xiju: 验证喜剧页内容</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_yingguo_xiju_2015: 验证英国 喜剧 2015页内容</div></td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>10</td>
-    <td>9</td>
-    <td>1</td>
+    <td>16</td>
+    <td>16</td>
+    <td>0</td>
     <td>0</td>
     <td>&nbsp;</td>
 </tr>
