@@ -180,6 +180,12 @@ except Timeout:
 ```
 ### 猴子补丁
 >monkey.patch_socket()这个命令是用来改变标准socket库的。
+### Greenlet运行机制：
+- python中执行环境中创建greenlet对象的时候，将会先调用green_new方法，接着调用green_init方法，构造出父级parent，这个parent指向当前线程的greenlet。所以每个线程包含一个独立的主greenlet和一个子greenlet树。不可能在属于不同线程的greenlet之间混合或切换。
+- 当一个greenlet调用switch()方法，会发生greenlet之间的切换，在这种情况下，执行会跳转到调用switch()的greenlet，或者当greenlet挂掉时，执行会跳转到父greenlet。
+- 如果greenlet的run()完成，则其返回值是发送给其父级的对象。 如果run()以异常终止，则异常将传播到其父级（除非它是greenlet.GreenletExit异常，在这种情况下异常对象被捕获并返回给父级）
+### Gevent基本思想
+- 当一个greenlet遇到IO操作时，比如访问网络，就自动切换到其他的greenlet，等到IO操作完成，再在适当的时候切换回来继续执行。由于IO操作非常耗时，经常使程序处于等待状态，有了gevent为我们自动切换协程，就保证总有greenlet在运行，而不是等待IO。
 
 
 ----------
