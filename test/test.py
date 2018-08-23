@@ -3,24 +3,26 @@ import requests
 
 class Testhttp(unittest.TestCase):
     '''单元测试类'''
+    def setUp(self):
+        self.host = "http://127.0.0.1:8008"
 
     def test_get_noarg(self):
         '''测试无参数的get请求'''
-        url = "http://127.0.0.1:8008/httpbin/get"
+        url = self.host+"/httpbin/get"
         data = {}
         test = Public
         test.get(self, url, data, "args")
 
     def test_getarg(self):
         '''测试多个参数，一个参数含一个值的get请求'''
-        url = "http://127.0.0.1:8008/httpbin/get"
+        url = self.host+"/httpbin/get"
         data = {"type": "1", "page": "2"}
         test = Public
         test.get(self, url, data, "args")
 
     def test_getargs(self):
         '''测试多个参数，一个参数含多个值的get请求'''
-        url = "http://127.0.0.1:8008/httpbin/get"
+        url = self.host+"/httpbin/get"
         data = { "k1": ["v1","v3"], "k2": "v2"}
         test = Public
         test.get(self,url,data,"args")
@@ -29,14 +31,14 @@ class Testhttp(unittest.TestCase):
 
     def test_postform(self):
         '''测试多个参数，一个参数含多个值的post请求'''
-        url = "http://127.0.0.1:8008/httpbin/post"
+        url = self.host+"/httpbin/post"
         data = { "k1": ["v1","v3"], "k2": "v2"}
         test = Public
         test.post(self,url,data,"form")
 
     def test_postforms(self):
         '''测试指定headers，且有多个参数，一个参数含多个值的post请求'''
-        url = "http://127.0.0.1:8008/httpbin/post"
+        url = self.host+"/httpbin/post"
         data = {'custname':'博雅大数据学院','custtel':'010-62756975','custemail': 'service@boyabigdata.cn','delivery':'18:00','comments':'北京市海淀区北四环西路67号中关村国际创新大厦603','size':'large','topping':['mushroom','cheese']}
         headers = {'Accept': '*/*',
                  'Accept-Encoding': 'gzip, deflate',
@@ -64,7 +66,7 @@ class Testhttp(unittest.TestCase):
 
     def test_getheaders(self):
         """指定headers并验证的get请求"""
-        url = "http://127.0.0.1:8008/httpbin/headers"
+        url = self.host+"/httpbin/headers"
         headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                      'Accept-Encoding': 'gzip, deflate',
                      'Host': 'httpbin.org',
@@ -79,61 +81,61 @@ class Testhttp(unittest.TestCase):
 
     def test_index(self):
         '''验证豆瓣首页内容'''
-        url = "http://127.0.0.1:8008/douban/"
+        url = self.host+"/douban/"
         test = Public
         test.html(self,url,"首页")
 
     def test_yingguo_xiju_2015(self):
         '''验证英国 喜剧 2015页内容'''
-        url = "http://127.0.0.1:8008/douban/tag/%E8%8B%B1%E5%9B%BD%20%E5%96%9C%E5%89%A7%202015?start=20&type=S"
+        url = self.host+"/douban/tag/%E8%8B%B1%E5%9B%BD%20%E5%96%9C%E5%89%A7%202015?start=20&type=S"
         test = Public
         test.html(self,url,"英国 喜剧 2015")
 
     def test_xiju(self):
         '''验证喜剧页内容'''
-        url = "http://127.0.0.1:8008/douban/tag/%E5%96%9C%E5%89%A7"
+        url = self.host+"/douban/tag/%E5%96%9C%E5%89%A7"
         test = Public
         test.html(self,url,"喜剧")
 
     def test_donghua(self):
         '''验证动画页内容'''
-        url = "http://127.0.0.1:8008/douban/tag/%E5%8A%A8%E7%94%BB"
+        url = self.host+"/douban/tag/%E5%8A%A8%E7%94%BB"
         test = Public
         test.html(self,url,"动画")
 
     def test_juqing(self):
         '''验证剧情页内容'''
-        url = "http://127.0.0.1:8008/douban/tag/%E5%89%A7%E6%83%85"
+        url = self.host+"/douban/tag/%E5%89%A7%E6%83%85"
         test = Public
         test.html(self,url,"剧情")
 
     def test_kehuan(self):
         '''验证科幻页内容'''
-        url = "http://127.0.0.1:8008/douban/tag/%E7%A7%91%E5%B9%BB"
+        url = self.host+"/douban/tag/%E7%A7%91%E5%B9%BB"
         test = Public
         test.html(self,url,"科幻")
 
     def test_status201(self):
         """验证201状态码"""
-        url = "http://127.0.0.1:8008/httpbin/status/201"
+        url = self.host+"/httpbin/status/201"
         test = Public
         test.status_code(self, url,201 )
 
     def test_status400(self):
         """验证400状态码"""
-        url = "http://127.0.0.1:8008/httpbin/status/400"
+        url = self.host+"/httpbin/status/400"
         test = Public
         test.status_code(self, url,400 )
 
     def test_status(self):
         """验证500状态码"""
-        url = "http://127.0.0.1:8008/httpbin/status/500"
+        url = self.host+"/httpbin/status/500"
         test = Public
         test.status_code(self, url,500 )
 
     def test_setcookie(self):
         '''验证cookie设置是否成功'''
-        url = "http://127.0.0.1:8008/httpbin/cookies/set?passport=boyabigdata"
+        url = self.host+"/httpbin/cookies/set?passport=boyabigdata"
         reqr = requests.get(url)
         self.assertEqual(reqr.status_code, 200)
         data = reqr.json()
