@@ -7,4 +7,4 @@ class  GetHandler(Request):
 
     def get(self):
         """处理GET请求"""
-        self.render("doubanindex.html")
+        self.render("doubanindex.htm")
