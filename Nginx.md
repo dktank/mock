@@ -40,47 +40,60 @@
 - server块：配置虚拟主机的相关参数，一个http中可以有多个server。
 - location块：配置请求的路由，以及各种页面的处理情况。
 - 示例如下
-```
-########### 每个指令必须有分号结束。#################
-#user administrator administrators;  #配置用户或者组，默认为nobody nobody。
-#worker_processes 2;  #允许生成的进程数，默认为1
-#pid /nginx/pid/nginx.pid;   #指定nginx进程运行文件存放地址
-error_log log/error.log debug;  #制定日志路径，级别。这个设置可以放入全局块，http块，server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg
-events {
-    accept_mutex on;   #设置网路连接序列化，防止惊群现象发生，默认为on
-    multi_accept on;  #设置一个进程是否同时接受多个网络连接，默认为off
-    #use epoll;      #事件驱动模型，select|poll|kqueue|epoll|resig|/dev/poll|eventport
-    worker_connections  1024;    #最大连接数，默认为512
-}
-http {
-    include       mime.types;   #文件扩展名与文件类型映射表
-    default_type  application/octet-stream; #默认文件类型，默认为text/plain
-    #access_log off; #取消服务日志    
-    log_format myFormat '$remote_addr–$remote_user [$time_local] $request $status $body_bytes_sent $http_referer $http_user_agent $http_x_forwarded_for'; #自定义格式
-    access_log log/access.log myFormat;  #combined为日志格式的默认值
-    sendfile on;   #允许sendfile方式传输文件，默认为off，可以在http块，server块，location块。
-    sendfile_max_chunk 100k;  #每个进程每次调用传输数量不能大于设定的值，默认为0，即不设上限。
-    keepalive_timeout 65;  #连接超时时间，默认为75s，可以在http，server，location块。
 
-    upstream mysvr {   
-      server 127.0.0.1:7878;
-      server 192.168.10.121:3333 backup;  #热备
+    ```
+    ########### 每个指令必须有分号结束。#################
+    #user administrator administrators;  #配置用户或者组，默认为nobody nobody。
+    #worker_processes 2;  #允许生成的进程数，默认为1
+    #pid /nginx/pid/nginx.pid;   #指定nginx进程运行文件存放地址
+    error_log log/error.log debug;  #制定日志路径，级别。这个设置可以放入全局块，http块，server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg
+    events {
+        accept_mutex on;   #设置网路连接序列化，防止惊群现象发生，默认为on
+        multi_accept on;  #设置一个进程是否同时接受多个网络连接，默认为off
+        #use epoll;      #事件驱动模型，select|poll|kqueue|epoll|resig|/dev/poll|eventport
+        worker_connections  1024;    #最大连接数，默认为512
     }
-    error_page 404 https://www.baidu.com; #错误页
-    server {
-        keepalive_requests 120; #单连接请求上限次数。
-        listen       4545;   #监听端口
-        server_name  127.0.0.1;   #监听地址       
-        location  ~*^.+$ {       #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
-           #root path;  #根目录
-           #index vv.txt;  #设置默认页
-           proxy_pass  http://mysvr;  #请求转向mysvr 定义的服务器列表
-           deny 127.0.0.1;  #拒绝的ip
-           allow 172.18.5.54; #允许的ip           
-        } 
+    http {
+        include       mime.types;   #文件扩展名与文件类型映射表
+        default_type  application/octet-stream; #默认文件类型，默认为text/plain
+        #access_log off; #取消服务日志    
+        log_format myFormat '$remote_addr–$remote_user [$time_local] $request $status $body_bytes_sent $http_referer $http_user_agent $http_x_forwarded_for'; #自定义格式
+        access_log log/access.log myFormat;  #combined为日志格式的默认值
+        sendfile on;   #允许sendfile方式传输文件，默认为off，可以在http块，server块，location块。
+        sendfile_max_chunk 100k;  #每个进程每次调用传输数量不能大于设定的值，默认为0，即不设上限。
+        keepalive_timeout 65;  #连接超时时间，默认为75s，可以在http，server，location块。
+    
+        upstream mysvr {   
+          server 127.0.0.1:7878;
+          server 192.168.10.121:3333 backup;  #热备
+        }
+        error_page 404 https://www.baidu.com; #错误页
+        server {
+            keepalive_requests 120; #单连接请求上限次数。
+            listen       4545;   #监听端口
+            server_name  127.0.0.1;   #监听地址       
+            location  ~*^.+$ {       #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
+               #root path;  #根目录
+               #index vv.txt;  #设置默认页
+               proxy_pass  http://mysvr;  #请求转向mysvr 定义的服务器列表
+               deny 127.0.0.1;  #拒绝的ip
+               allow 172.18.5.54; #允许的ip           
+            } 
+        }
     }
-}
-```
+    ```
+
+5. 概念详解
+- worker_connections：表示每个 worker 进程所能建立连接的最大值；一个 Nginx 能建立的最大连接数，应该是worker_connections * worker_processes。
+- worker_connections * worker_processes：对于 HTTP 请求本地资源来说，能够支持的最大并发数量
+- 如果是 HTTP 作为反向代理来说，最大并发数量应该是worker_connections * worker_processes/2。反向代理服务器里的每个并发会建立与客户端的连接和与后端服务的连接，会占用两个连接。
+6. 惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。
+- ngx_accept_disabled作为单个进程负载较高（最大允许连接数的7/8）的标记，计算公式：
+ngx_accept_disabled = ngx_cycle->connection_n/8 - ngx_cycle->free_connection_n;
+即进程可用连接数free_connection_n小于总连接数connection_n的1/8时ngx_accept_disabled大于0；否则小于0.或者说ngx_accept_disabled小于0时，表示可用连接数较多，负载较低；ngx_accept_disabled大于0时，说明可用连接数较少，负载较高。
+- 如果进程负载较低时，即ngx_accept_disabled 小于0，进程允许竞争accept锁。
+- 如果进程负载较高时，放弃竞争accept锁，同时ngx_accept_disabled 减1，即认为由于让出一次竞争accept锁的机会，负载稍微减轻
+
 
 
 
