@@ -4,7 +4,7 @@
 |:---:|:---:|
 |Ubuntu|16.04.5 LTS|
 |long_bit|64|
-|Nginx|1.14.0|
+|Nginx|1.10.3|
 |python|3.6.5|
 |gevent|1.3.6|
 |greenlet|0.4.14|

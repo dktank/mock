@@ -93,6 +93,31 @@ ngx_accept_disabled = ngx_cycle->connection_n/8 - ngx_cycle->free_connection_n;
 即进程可用连接数free_connection_n小于总连接数connection_n的1/8时ngx_accept_disabled大于0；否则小于0.或者说ngx_accept_disabled小于0时，表示可用连接数较多，负载较低；ngx_accept_disabled大于0时，说明可用连接数较少，负载较高。
 - 如果进程负载较低时，即ngx_accept_disabled 小于0，进程允许竞争accept锁。
 - 如果进程负载较高时，放弃竞争accept锁，同时ngx_accept_disabled 减1，即认为由于让出一次竞争accept锁的机会，负载稍微减轻
+7. 自定义反向代理的错误页面
+
+    ```
+    location / {
+    # 关键参数：当后端返回404，nginx拦截错误定义错误页面
+    proxy_intercept_errors on;
+    }
+    error_page  404 /404.html;#定义404错误重定向
+    location = /404.html {
+    root  /usr/share/nginx/html;#存放404.html错误页面的地址
+    }
+    ```
+8. nohup用于使程序在用户退出登陆、关闭终端之后仍能继续运行
+- 用法：
+     - nohup command
+     - exit #（退出nohup模式）
+     - ps -ef|grep "command" #（查找运行该命令的进程）
+     - kill -9 your_command_pid #(根据进程号关闭程序)
+- nohup和&的区别
+     - & ： 指在后台运行，但当用户退出(挂起)的时候，命令自动也跟着退出
+     - nohup ： 不挂断的运行，注意并没有后台运行的功能，，就是指，用nohup运行命令可以使命令永久的执行下去，和用户终端没有关系，例如我们断开SSH连接都不会影响他的运行
+- 例子
+     - sh test.sh & ：将sh test.sh任务放到后台 ，关闭xshell，对应的任务也跟着停止。
+     - nohup sh test.sh：将sh test.sh任务放到后台，关闭标准输入，终端不再能够接收任何输入（标准输入）
+     - nohup sh test.sh  & 将sh test.sh任务放到后台，但是依然可以使用标准输入，终端能够接收任何输入
 
 
 
