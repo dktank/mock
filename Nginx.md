@@ -12,6 +12,14 @@
 - 模块化的结构。包括 gzipping, byte ranges, chunked responses,以及 SSI-filter 等 filter。如果由 FastCGI 或其它代理服务器处理单页中存在的多个 SSI，则这项处理可以并行运行，而不需要相互等待。
 - 支持 SSL 和 TLSSNI．
 
+##Nginx较Apache
+- 轻量级，同样起web 服务，比apache 占用更少的内存及资源 
+- Nginx 静态处理性能比 Apache 高 
+- 抗并发，nginx 处理请求是异步非阻塞的，而apache 则是阻塞型的，在高并发下nginx 能保持低资源低消耗高性能 
+- 高度模块化的设计，编写模块相对简单 
+- 社区活跃，各种高性能模块出品迅速
+- 适合静态和反向。 
+
 ##Nginx架构
 1. 概要
     - Nginx 在启动后，在 unix 系统中会以 daemon 的方式在后台运行，后台进程包含一个 master 进程和多个 worker 进程。

@@ -58,6 +58,68 @@ iptables -t 表名 <-A/I/D/R> 规则链名 [规则号] <-i/o 网卡名> -p 协�
 - 删除INPUT里序号为8的规则：iptables -D INPUT 8
 - 使iptables规则生效：iptables-restore < /etc/iptables/rules.v4 
 
+##UFW
+1. UFW，即Uncomplicated Firewall，是基于iptables实现的防火墙管理工具，所以实际上UFW修改的是iptables的规则。
+2. UFW默认情况下允许所有的出站连接，拒绝所有的入站连接
+- sudo ufw default deny incoming
+- sudo ufw default allow outgoing
+3. 允许SSH连接（一种网络协议，用于计算机之间的加密登录）
+- sudo ufw allow ssh = sudo ufw allow 22
+4. 查看防火墙状态
+- sudo ufw status verbose
+5. 查看添加的防火墙规则
+- sudo ufw show added
+6. 启动UFW
+- sudo ufw enable
+7. 禁用UFW
+- sudo ufw disable
+8. 启用防火墙日志：
+- sudo ufw logging on
+9. 禁用防火墙日志：
+- sudo ufw logging off
+10. 允许HTTP 80端口的所有连接
+- sudo ufw allow http
+- sudo ufw allow 80
+11. 允许https的连接
+- sudo ufw allow https
+- sudo ufw allow 443
+12. 允许ftp的连接
+- sudo ufw allow ftp
+- sudo ufw allow 21/tcp
+13. 允许指定范围内的端口的指定协议的连接，例如：6000-6007：
+- sudo ufw allow 6000:6007/tcp
+- sudo ufw allow 6000:6007/udp
+14. 允许某IP的所有连接：
+- sudo ufw allow from your_ip
+15. to any port 22允许端口22的所有连接
+- sudo ufw allow from your_ip to any port 22
+16. 允许IP段15.15.15.1到15.15.15.254的所有连接：
+- sudo ufw allow from 15.15.15.0/24
+17.  查看所有规则的规则号
+- sudo ufw status numbered
+18.  通过规则好删除规则：如果即有ipv6，又有ipv4，那就删除2个
+- sudo ufw delete 2
+19. 通过规则删除
+- sudo ufw delete allow http
+- sudo ufw delete allow 80
+20. 重置防火墙规则
+- sudo ufw reset
+21. 批量禁止IP（file.txt是IP列表）
+- while read line; do sudo ufw deny from $line; done < file.txt
+
+##DAC和MAC有什么区别
+1. DAC（Discretionary Access Control，自主访问控制）
+- DAC是传统的Linux的访问控制方式，DAC可以对文件、文件夹、共享资源等进行访问控制。
+- 在DAC这种模型中，文件客体的所有者（或者管理员）负责管理访问控制。
+- DAC使用了ACL（Access Control List，访问控制列表）来给非管理者用户提供不同的权限，而root用户对文件系统有完全自由的控制权
+2. MAC（Mandatory Access Control，强制访问控制）
+- SELinux在内核中使用MAC检查操作是否允许。
+- 在MAC这种模型中，系统管理员管理负责访问控制，用户不能直接改变强制访问控制属性。
+- MAC可以定义所有的进程（称为主体）对系统的其他部分（文件、设备、socket、端口和其它进程等，称为客体）进行操作的权限或许可。
+3. DAC和MAC的其它区别
+- DAC的主体是真实有效的用户和组ID，MAC的主体是安全上下文，两者的UID是各自独立的。
+- DAC的访问控制模式是rwxrwxrwx，MAC的访问控制模式是user:role:type。
+
 ## AppArmor与SELinux
 1. -  二者相同点：都是Linux中的强制访问控制(Mandatory Access Control)
    - 二者不同点：
