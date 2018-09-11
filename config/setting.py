@@ -1,3 +1,4 @@
+# encoding=utf-8
 import os
 
 #配置模板，静态文件等信息

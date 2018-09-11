@@ -1,11 +1,12 @@
+# encoding=utf-8
 from handlers.public import Request
-from tornado import escape
+from tornado import gen
 
 class  Set_cookiesHandler(Request):
     """该Handler完成编号23协议
             根据query参数设置cookies，并显示
     """
-
+    @gen.coroutine
     def get(self):
 
         self.clear_all_cookies()
@@ -24,6 +25,8 @@ class  Set_cookiesHandler(Request):
 
 class Get_cookiesHandler(Request):
     '''显示cookies,主要是显示url:/httpbin/cookies/set设置的cookies'''
+
+    @gen.coroutine
     def get(self):
         get_cookies = self.request.headers["Cookie"]
         cookies_list = get_cookies.split("; ")

@@ -1,3 +1,4 @@
+# encoding=utf-8
 import tornado.web
 import tornado.httpserver
 import tornado.ioloop
@@ -18,6 +19,5 @@ def run():
     tornado.options.parse_command_line()
     app = application
     http_server = tornado.httpserver.HTTPServer(app)
-    http_server.bind(options.port)
-    http_server.start(0)
+    http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
