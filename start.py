@@ -1,3 +1,4 @@
+# encoding=utf-8
 from App import application
 
 #运行服务

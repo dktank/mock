@@ -8,14 +8,13 @@ def f(req_url):
     try:
         reqr = requests.get(req_url)
         text = reqr.json()
-        print(text)
     except Exception as e:
         lis.append(1)
-        len1 =  len(lis)
-        print("*"*len1+str(len1),e)
-        print(str(len1),e)
+        length = len(lis)
+        len1 =  int(len(lis)*0.1)
+        print("*"*len1,length,e)
 spa_list = []
-for i in range(1500):
-    url =  'http://httpbin.org/get?i='+str(i)
+for i in range(1000):
+    url =  'http://192.168.100.119:8008/httpbin/get?i='+str(i)
     spa_list.append(gevent.spawn(f,url))
 gevent.joinall(spa_list)

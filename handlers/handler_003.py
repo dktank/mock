@@ -1,5 +1,6 @@
+# encoding=utf-8
 from handlers.public import Request
-
+from tornado import gen
 
 class PostHandler(Request):
     """该Handler完成编号3，5,10协议：/httpbin/post|post|3|JSON|No.137<br> body{ "k1": "v1", "k2": "v2"} |
@@ -10,6 +11,7 @@ class PostHandler(Request):
                                     'size':'large','topping':'mushroom','cheese'}|
     """
 
+    @gen.coroutine
     def post(self):
         """处理POST请求 """
 

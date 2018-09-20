@@ -1,3 +1,4 @@
+# encoding=utf-8
 import tornado.web
 
 class RequestHandler(tornado.web.RequestHandler):

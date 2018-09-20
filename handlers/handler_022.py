@@ -1,9 +1,11 @@
+# encoding=utf-8
 from config.rewrite import RequestHandler
-
+from tornado import gen
 
 class Status500Handler(RequestHandler):
     """该Handler完成编号22协议：|status/500|get|22|无response|No.139|"""
 
+    @gen.coroutine
     def get(self):
         """处理GET请求
 

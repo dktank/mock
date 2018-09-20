@@ -1,3 +1,4 @@
+# encoding=utf-8
 from handlers import handler_001,handler_003,handler_004,handler_012,handler_013,handler_015,handler_020,handler_021,handler_022,handler_023
 
 urls = [

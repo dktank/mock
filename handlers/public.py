@@ -1,3 +1,4 @@
+# encoding=utf-8
 from config.rewrite import RequestHandler
 
 class Request(RequestHandler):

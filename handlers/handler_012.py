@@ -1,4 +1,6 @@
+# encoding=utf-8
 from handlers.public import Request
+from tornado import gen
 
 class  GetHandler(Request):
     """该Handler完成编号12,16,17,18,19协议
@@ -6,6 +8,7 @@ class  GetHandler(Request):
        16，17，18，19协议按照path返回不同页面
     """
 
+    @gen.coroutine
     def get(self,tag_name):
         """处理GET请求"""
 
@@ -39,7 +42,7 @@ class  GetHandler(Request):
 
 
 '''
-        verification_tag =  r"英国 喜剧 2015"
+        verification_tag =  u"英国 喜剧 2015"
         #判断tag_name是否为"英国 喜剧 2015",如果是检查该链接参数
         if tag_name ==verification_tag:
             if Request.verification_query(self):
